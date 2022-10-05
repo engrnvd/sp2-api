@@ -1,5 +1,7 @@
 <?php
 
+$frontendBaseDir = base_path('../vue-template/src/');
+
 return [
 
     /*
@@ -45,7 +47,7 @@ return [
     /*
      * Where to store the views
      * */
-    'views-directory' => base_path('frontend/src/views/app/'),
+    'views-directory' => $frontendBaseDir . 'views/',
 
     /*
      * What views to generate
@@ -65,7 +67,7 @@ return [
      * */
     'extra-entries' => [
         [
-            'filename' => base_path('frontend/src/routes/app.routes.js'),
+            'filename' => $frontendBaseDir . 'routes/index.js',
             'template' => 'vue-route',
             'identifier' => '// vue routes generated here. Do not remove this line.',
         ],

@@ -4,5 +4,5 @@
 ?>
         {
             path: '{{$table->slug()}}',
-            component: () => import(/* webpackChunkName: "{{$table->slug()}}" */ '../views/app/{{$table->slug()}}'),
+            component: () => import('../views/{{$table->slug()}}'),
         },
