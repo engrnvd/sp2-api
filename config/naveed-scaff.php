@@ -1,6 +1,6 @@
 <?php
 
-$frontendBaseDir = base_path('../vue-template/src/');
+$frontendBaseDir = base_path('/frontend/src/');
 
 return [
 
