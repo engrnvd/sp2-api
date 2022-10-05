@@ -17,3 +17,4 @@ Route::get('/', function () {
     return ['Laravel' => app()->version()];
 });
 
+require_once __DIR__ . "/crud-routes.php";

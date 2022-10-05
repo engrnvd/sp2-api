@@ -16,7 +16,7 @@ return [
      * the directory will be dynamically determined using the namespace
      * */
 
-    'model-namespace' => "App/Models",
+    'model-namespace' => "App\Models",
 
     /*
      * Namespace to of the parent model which the generated model will extend
