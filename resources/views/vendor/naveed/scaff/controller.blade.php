@@ -21,7 +21,7 @@ class {{$table->studly(true)}}Controller extends Controller
     public function store(Request $request)
     {
         ${{$table->camel(true)}} = new {{$table->studly(true)}}($request->all());
-        $this->validate($request, ${{$table->camel(true)}}->validationRules());
+        $this->validate($request, ${{$table->camel(true)}}->getValidationRules());
         ${{$table->camel(true)}}->save();
         return ${{$table->camel(true)}};
     }
@@ -40,7 +40,7 @@ class {{$table->studly(true)}}Controller extends Controller
             return ${{$table->camel(true)}};
         }
 
-        $this->validate($request, ${{$table->camel(true)}}->validationRules());
+        $this->validate($request, ${{$table->camel(true)}}->getValidationRules());
         ${{$table->camel(true)}}->update($request->all());
         return ${{$table->camel(true)}};
     }
@@ -98,7 +98,7 @@ class {{$table->studly(true)}}Controller extends Controller
     {
         if (!${{$table->camel(true)}}) ${{$table->camel(true)}} = new {{$table->studly(true)}}();
         $data = [$field => $value];
-        $validator = \Validator::make($data, ${{$table->camel(true)}}->validationRules($field));
+        $validator = \Validator::make($data, ${{$table->camel(true)}}->getValidationRules($field));
         if ($validator->fails()) {
             abort(403, $validator->errors()->first($field));
         }

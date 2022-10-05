@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Traits\HasValidationRules;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -26,7 +27,7 @@ use Illuminate\Support\Arr;
  */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasValidationRules, HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
         'name',
@@ -65,28 +66,14 @@ class User extends Authenticatable
         return $query->get();
     }
 
-    public function validationRules($attributes = null)
+    public function validationRules(): array
     {
-        $rules = [
+        return [
             "name" => "required",
             "email" => "required|email",
             "password" => "required",
             "is_admin" => "required",
         ];
-
-        // no list is provided
-        if (!$attributes)
-            return $rules;
-
-        // a single attribute is provided
-        if (!is_array($attributes))
-            return [$attributes => Arr::get($rules, $attributes, '')];
-
-        // a list of attributes is provided
-        $newRules = [];
-        foreach ($attributes as $attr)
-            $newRules[$attr] = Arr::get($rules, $attr, '');
-        return $newRules;
     }
 
 }

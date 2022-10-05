@@ -16,7 +16,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $user = new User($request->all());
-        $this->validate($request, $user->validationRules());
+        $this->validate($request, $user->getValidationRules());
         $user->save();
         return $user;
     }
@@ -35,7 +35,7 @@ class UserController extends Controller
             return $user;
         }
 
-        $this->validate($request, $user->validationRules());
+        $this->validate($request, $user->getValidationRules());
         $user->update($request->all());
         return $user;
     }
@@ -93,7 +93,7 @@ class UserController extends Controller
     {
         if (!$user) $user = new User();
         $data = [$field => $value];
-        $validator = \Validator::make($data, $user->validationRules($field));
+        $validator = \Validator::make($data, $user->getValidationRules($field));
         if ($validator->fails()) {
             abort(403, $validator->errors()->first($field));
         }

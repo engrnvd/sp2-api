@@ -9,6 +9,7 @@ namespace {{config('naveed-scaff.model-namespace')}};
 
 use Illuminate\Support\Arr;
 use {{config('naveed-scaff.parent-model-namespace')}};
+use App\Traits\HasValidationRules;
 
 /**
  * {{config('naveed-scaff.model-namespace')}}\{{$table->studly(true)}}
@@ -30,6 +31,8 @@ use {{config('naveed-scaff.parent-model-namespace')}};
  */
 class {{$table->studly(true)}} extends Model
 {
+    use HasValidationRules;
+
     protected $guarded = ["{{$table->idField}}", "created_at", "updated_at"];
     public static $bulkEditableFields = ['{!! join("', '", $gen->getBulkEditableFields($table)) !!}'];
 @if (!$table->timestamps)
@@ -54,29 +57,15 @@ class {{$table->studly(true)}} extends Model
         return $query->get();
     }
 
-    public function validationRules($attributes = null)
+    public function validationRules(): array
     {
-        $rules = [
+        return [
 @foreach ($table->fields as $field)
 @if($rule = $gen->getValidationRule($field))
             {!! $rule !!}
 @endif
 @endforeach
         ];
-
-        // no list is provided
-        if (!$attributes)
-            return $rules;
-
-        // a single attribute is provided
-        if (!is_array($attributes))
-            return [$attributes => Arr::get($rules, $attributes, '')];
-
-        // a list of attributes is provided
-        $newRules = [];
-        foreach ($attributes as $attr)
-            $newRules[$attr] = Arr::get($rules, $attr, '');
-        return $newRules;
     }
 
 }
