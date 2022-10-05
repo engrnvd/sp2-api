@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         return User::findRequested();
     }
@@ -21,7 +21,7 @@ class UserController extends Controller
         return $user;
     }
 
-    public function show(Request $request, User $user)
+    public function show(User $user)
     {
         return $user;
     }
@@ -40,7 +40,7 @@ class UserController extends Controller
         return $user;
     }
 
-    public function destroy(Request $request, User $user)
+    public function destroy(User $user)
     {
         $user->delete();
         return "User deleted";
