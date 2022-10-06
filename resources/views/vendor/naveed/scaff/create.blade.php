@@ -8,6 +8,7 @@
     import UInput from '@/U/components/UInput.vue'
     import { requiredRule } from '@/Vee/rules/required.rule'
     import { useValidator } from '@/Vee/useValidator'
+    import { Validator } from '@/Vee/validator'
     import { use{{$table->studly()}}Store } from '@/views/{{$table->slug()}}/store'
     import { useRouter } from 'vue-router'
 
@@ -15,17 +16,14 @@
     const {{$table->camel()}} = use{{$table->studly()}}Store()
 
     const v = useValidator({{$table->camel()}}.form, (v: Validator) => {
-@foreach($table->fields as $field)
-
-@if (!in_array($field->name, ModelGenerator::skippedFields()))
-    @if ($field->required)
-            v.addRule(requiredRule('{{$field->name}}'))
-    @@endif
-    @if (preg_match("/email/", $field->name))
-            v.addRule(emailRule('{{$field->name}}'))
-    @endif
-    @endif
-@@endforeach
+        @foreach($table->fields as $field)
+        @if ($field->required && !in_array($field->name, config('naveed-scaff.skipped-fields')))
+        v.addRule(requiredRule('{{$field->name}}'))
+        @endif
+        @if (preg_match("/email/", $field->name) && !in_array($field->name, config('naveed-scaff.skipped-fields')))
+        v.addRule(emailRule('{{$field->name}}'))
+        @endif
+        @endforeach
     })
 
     function save() {
