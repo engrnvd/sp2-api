@@ -13,7 +13,7 @@ use Illuminate\Support\Arr;
 
 class {{$table->studly(true)}}Controller extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         return {{$table->studly(true)}}::findRequested();
     }
@@ -26,7 +26,7 @@ class {{$table->studly(true)}}Controller extends Controller
         return ${{$table->camel(true)}};
     }
 
-    public function show(Request $request, {{$table->studly(true)}} ${{$table->camel(true)}})
+    public function show({{$table->studly(true)}} ${{$table->camel(true)}})
     {
         return ${{$table->camel(true)}};
     }
@@ -45,7 +45,7 @@ class {{$table->studly(true)}}Controller extends Controller
         return ${{$table->camel(true)}};
     }
 
-    public function destroy(Request $request, {{$table->studly(true)}} ${{$table->camel(true)}})
+    public function destroy({{$table->studly(true)}} ${{$table->camel(true)}})
     {
         ${{$table->camel(true)}}->delete();
         return "{{$table->title(true)}} deleted";

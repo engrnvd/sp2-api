@@ -72,7 +72,7 @@ class User extends Authenticatable
             "name" => "required",
             "email" => "required|email",
             "password" => "required",
-            "is_admin" => "required",
+            "is_admin" => "",
         ];
     }
 

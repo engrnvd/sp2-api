@@ -52,7 +52,7 @@ return [
     /*
      * What views to generate
      * */
-    'views' => ['index', 'create'],
+    'views' => ['index', 'create', 'store'],
 
     /*
      * View Files extension
