@@ -16,6 +16,7 @@ use Illuminate\Support\Arr;
  * @property string $id
  * @property string $name
  * @property string $email
+ * @property string $otp
  * @property string $password
  * @property string $is_admin
  * @property string $created_at
@@ -47,6 +48,16 @@ class User extends Authenticatable
 
     public static $bulkEditableFields = ['name', 'email', 'is_admin'];
 
+    public function generateOtp(): int
+    {
+        try {
+            $this->otp = random_int(100000, 999999);
+        } catch (\Exception $e) {
+        }
+        $this->save();
+        return $this->otp;
+    }
+
     public static function findRequested()
     {
         $query = User::query();
@@ -71,7 +82,7 @@ class User extends Authenticatable
         return [
             "name" => "required",
             "email" => "required|email",
-            "password" => "required",
+            "password" => "required|min:6",
             "is_admin" => "",
         ];
     }
