@@ -1,6 +1,6 @@
 <?php
 
-$frontendBaseDir = base_path('/frontend/src/');
+$frontendBaseDir = base_path('/frontend/sp2-admin/src/');
 
 return [
 
