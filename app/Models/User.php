@@ -48,6 +48,11 @@ class User extends Authenticatable
 
     public static $bulkEditableFields = ['name', 'email', 'is_admin'];
 
+    public static function current(): \Illuminate\Contracts\Auth\Authenticatable|self|null
+    {
+        return auth('sanctum')->user();
+    }
+
     public function generateOtp(): int
     {
         try {
