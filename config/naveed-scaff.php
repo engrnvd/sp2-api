@@ -1,6 +1,6 @@
 <?php
 
-$frontendBaseDir = base_path('/frontend/sp2-admin/src/');
+$frontendBaseDir = base_path('frontend/sp2-admin/src/');
 
 return [
 
@@ -42,7 +42,7 @@ return [
      * and the file will be included in the following file
      * */
 
-    'routes-file' => base_path('routes') . "/web.php",
+    'routes-file' => base_path('routes') . "/api.php",
 
     /*
      * Where to store the views
@@ -52,12 +52,7 @@ return [
     /*
      * What views to generate
      * */
-    'views' => ['index', 'create', 'store'],
-
-    /*
-     * View Files extension
-     * */
-    'view-files-extension' => 'vue',
+    'views' => ['index.vue', 'create.vue', 'store.ts'],
 
     /*
      * If you want some extra code to be generated in some existing files, this is where you configure that
@@ -67,16 +62,9 @@ return [
      * */
     'extra-entries' => [
         [
-            'filename' => $frontendBaseDir . 'routes/index.js',
+            'filename' => $frontendBaseDir . 'router/index.ts',
             'template' => 'vue-route',
             'identifier' => '// vue routes generated here. Do not remove this line.',
         ],
-//        [
-//            'filename' => base_path('frontend/src/constants/menu.js'),
-//            'template' => 'menu-entry',
-//            'identifier' => '// menu entries generated here. Do not remove this line.',
-//        ],
     ],
-
-
 ];
