@@ -36,6 +36,11 @@ class Sitemap extends Model
         if (\Request::get('owner_id')) $query->where('owner_id', request('owner_id'));
         if (\Request::has('is_template')) $query->where('is_template', request('is_template'));
 
+        $user = User::current();
+        if (!$user->is_admin) {
+            $query->where('owner_id', $user->id);
+        }
+
         // sort results
         if (\Request::has("sort")) $query->orderBy(request("sort"), request("sortType", "asc"));
 
