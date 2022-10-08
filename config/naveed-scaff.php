@@ -52,7 +52,7 @@ return [
     /*
      * What views to generate
      * */
-    'views' => ['index.vue', 'create.vue', 'store.ts'],
+    'views' => ['index' => 'vue', 'create' => 'vue', 'store' => 'ts'],
 
     /*
      * If you want some extra code to be generated in some existing files, this is where you configure that

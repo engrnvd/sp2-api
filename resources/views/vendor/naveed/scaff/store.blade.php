@@ -42,8 +42,6 @@ export const use{{$table->studly()}}Store = defineStore('{{$table->camel()}}', {
         this.req.data.data = this.req.data.data || []
         // @ts-ignore
         this.req.data.data.unshift(res)
-        // @ts-ignore
-        this.req.data.data.pop()
         this.resetForm()
 
         notify.success('Success', '{{$table->title(true)}} created')

@@ -5946,12 +5946,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/engrnvd/laravel-scaff.git",
-                "reference": "526af9855b047bf84c1c87e29e5403f2f957721d"
+                "reference": "10e21cb2673c9b7487559b8dfbabc7154733d5a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/engrnvd/laravel-scaff/zipball/526af9855b047bf84c1c87e29e5403f2f957721d",
-                "reference": "526af9855b047bf84c1c87e29e5403f2f957721d",
+                "url": "https://api.github.com/repos/engrnvd/laravel-scaff/zipball/10e21cb2673c9b7487559b8dfbabc7154733d5a0",
+                "reference": "10e21cb2673c9b7487559b8dfbabc7154733d5a0",
                 "shasum": ""
             },
             "require": {
@@ -5978,7 +5978,7 @@
                 "source": "https://github.com/engrnvd/laravel-scaff/tree/master",
                 "issues": "https://github.com/engrnvd/laravel-scaff/issues"
             },
-            "time": "2022-10-05T07:12:06+00:00"
+            "time": "2022-10-08T08:14:19+00:00"
         },
         {
             "name": "nunomaduro/collision",
