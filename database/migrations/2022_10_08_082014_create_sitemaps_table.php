@@ -14,8 +14,8 @@ return new class extends Migration
             $table->integer('owner_id')->nullable();
             $table->index('owner_id');
             $table->boolean('is_template')->nullable();
-            $table->json('tree')->default('[]')->nullable();
-            $table->json('sections')->default('[]')->nullable();
+            $table->json('tree')->nullable();
+            $table->json('sections')->nullable();
             $table->timestamps();
         });
     }
