@@ -5,7 +5,6 @@
 
 import { defineStore } from 'pinia'
 import { FetchRequest } from '@/helpers/fetch-request'
-import { toFormData } from '@/helpers/misc'
 import { useNotify } from '@/U/composables/Notifiy'
 
 const notify = useNotify()
@@ -35,7 +34,7 @@ export const use{{$table->studly()}}Store = defineStore('{{$table->camel()}}', {
     },
     create() {
       return this.createReq.send({
-        body: toFormData(this.form)
+        body: JSON.stringify(this.form)
       }).then(res => {
         this.req.data = this.req.data || { data: [] }
         // @ts-ignore
