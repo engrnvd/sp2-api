@@ -86,7 +86,7 @@ class User extends Authenticatable
     {
         return [
             "name" => "required",
-            "email" => "required|email",
+            "email" => "required|email|unique:users,email,{$this->id}",
             "password" => "required|min:6",
             "is_admin" => "",
         ];
