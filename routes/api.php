@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 require __DIR__ . '/auth.php';
 
 Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/sitemaps/{sitemap}/save-command', [App\Http\Controllers\SitemapController::class, 'saveCommand']);
+
     Route::get('/user', function (Request $request) {
         return $request->user();
     });

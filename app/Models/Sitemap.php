@@ -29,6 +29,10 @@ class Sitemap extends Model
     use HasValidationRules;
 
     protected $guarded = ["id", "created_at", "updated_at"];
+    protected $casts = [
+        'tree' => 'array',
+        'sections' => 'array',
+    ];
     public static $bulkEditableFields = ['name', 'owner_id', 'is_template', 'tree', 'sections'];
 
     public static function findRequested()

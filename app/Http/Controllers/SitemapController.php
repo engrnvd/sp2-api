@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Sitemap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 
 class SitemapController extends Controller
 {
@@ -19,9 +18,21 @@ class SitemapController extends Controller
         $sitemap = new Sitemap($request->all());
         $sitemap->is_template = $request->is_template ?? false;
         $sitemap->owner_id = \auth('sanctum')->user()->id;
+        $sitemap->tree = [
+            [
+                'name' => 'Home',
+                'children' => [],
+            ]
+        ];
+        $sitemap->sections = json_encode([]);
         $this->validate($request, $sitemap->getValidationRules());
         $sitemap->save();
         return $sitemap;
+    }
+
+    public function saveCommand(Sitemap $sitemap)
+    {
+        return \request()->all();
     }
 
     public function show(Sitemap $sitemap)
