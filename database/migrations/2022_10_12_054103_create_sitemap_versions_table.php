@@ -12,11 +12,11 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('sitemap_commands', function (Blueprint $table) {
+        Schema::create('sitemap_versions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('sitemap_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('label');
-            $table->string('type');
             $table->json('payload');
             $table->timestamps();
         });
@@ -29,6 +29,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('sitemap_commands');
+        Schema::dropIfExists('sitemap_versions');
     }
 };

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sitemap;
-use App\Models\SitemapCommand;
+use App\Models\SitemapVersion;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
@@ -19,10 +20,10 @@ class SitemapController extends Controller
         $sitemap = new Sitemap($request->all());
         $sitemap->is_template = $request->is_template ?? false;
         $sitemap->owner_id = \auth('sanctum')->user()->id;
-        $sitemap->pages = [
-            1 => ['id' => 1, 'name' => 'Home', 'childIds' => []]
+        $sitemap->tree = [
+            ['name' => 'Home', 'childIds' => []]
         ];
-        $sitemap->sections = json_encode([]);
+        $sitemap->sections = [];
         $this->validate($request, $sitemap->getValidationRules());
         $sitemap->save();
         return $sitemap;
@@ -30,22 +31,30 @@ class SitemapController extends Controller
 
     public function saveCommand($id)
     {
-        SitemapCommand::create([
+        $command = \request()->all();
+
+        SitemapVersion::create([
             "sitemap_id" => $id,
-            ...\request()->all(),
+            "user_id" => User::current()->id,
+            ...$command,
         ]);
+
+        Sitemap::where('id', $id)->update([
+            'tree' => json_encode(Arr::get($command, 'payload.tree')),
+            'sections' => json_encode(Arr::get($command, 'payload.sections', [])),
+        ]);
+
         return '';
     }
 
     public function undoCommand($id)
     {
-        SitemapCommand::where('sitemap_id', $id)->orderByDesc('id')->limit(1)->delete();
+        SitemapVersion::where('sitemap_id', $id)->orderByDesc('id')->limit(1)->delete();
         return '';
     }
 
     public function show(Sitemap $sitemap)
     {
-        $sitemap->load('commands');
         return $sitemap;
     }
 
