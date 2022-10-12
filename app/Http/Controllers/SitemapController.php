@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sitemap;
+use App\Models\SitemapCommand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
@@ -18,11 +19,8 @@ class SitemapController extends Controller
         $sitemap = new Sitemap($request->all());
         $sitemap->is_template = $request->is_template ?? false;
         $sitemap->owner_id = \auth('sanctum')->user()->id;
-        $sitemap->tree = [
-            [
-                'name' => 'Home',
-                'children' => [],
-            ]
+        $sitemap->pages = [
+            1 => ['id' => 1, 'name' => 'Home', 'childIds' => []]
         ];
         $sitemap->sections = json_encode([]);
         $this->validate($request, $sitemap->getValidationRules());
@@ -30,13 +28,24 @@ class SitemapController extends Controller
         return $sitemap;
     }
 
-    public function saveCommand(Sitemap $sitemap)
+    public function saveCommand($id)
     {
-        return \request()->all();
+        SitemapCommand::create([
+            "sitemap_id" => $id,
+            ...\request()->all(),
+        ]);
+        return '';
+    }
+
+    public function undoCommand($id)
+    {
+        SitemapCommand::where('sitemap_id', $id)->orderByDesc('id')->limit(1)->delete();
+        return '';
     }
 
     public function show(Sitemap $sitemap)
     {
+        $sitemap->load('commands');
         return $sitemap;
     }
 

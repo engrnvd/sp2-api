@@ -13,15 +13,14 @@ use App\Traits\HasValidationRules;
  * @property string $name
  * @property string $owner_id
  * @property string $is_template
- * @property string $tree
- * @property string $sections
+ * @property array $pages
+ * @property array $sections
  * @property string $created_at
  * @property string $updated_at
+ * @property SitemapCommand[] $commands
  * @method static \Illuminate\Database\Query\Builder|Sitemap whereName($value)
  * @method static \Illuminate\Database\Query\Builder|Sitemap whereOwnerId($value)
  * @method static \Illuminate\Database\Query\Builder|Sitemap whereIsTemplate($value)
- * @method static \Illuminate\Database\Query\Builder|Sitemap whereTree($value)
- * @method static \Illuminate\Database\Query\Builder|Sitemap whereSections($value)
  * @mixin \Eloquent
  */
 class Sitemap extends Model
@@ -30,10 +29,10 @@ class Sitemap extends Model
 
     protected $guarded = ["id", "created_at", "updated_at"];
     protected $casts = [
-        'tree' => 'array',
+        'pages' => 'array',
         'sections' => 'array',
     ];
-    public static $bulkEditableFields = ['name', 'owner_id', 'is_template', 'tree', 'sections'];
+    public static $bulkEditableFields = ['name', 'owner_id', 'is_template'];
 
     public static function findRequested()
     {
@@ -43,7 +42,7 @@ class Sitemap extends Model
         if (\Request::get('name')) $query->where('name', 'like', '%' . request('name') . '%');
         if (\Request::get('owner_id')) $query->where('owner_id', request('owner_id'));
         if (\Request::has('is_template')) $query->where('is_template', request('is_template'));
-        if (\Request::get('tree')) $query->where('tree', request('tree'));
+        if (\Request::get('pages')) $query->where('pages', request('pages'));
         if (\Request::get('sections')) $query->where('sections', request('sections'));
 
         $user = User::current();
@@ -66,9 +65,14 @@ class Sitemap extends Model
             "name" => "required",
             "owner_id" => "",
             "is_template" => "",
-            "tree" => "",
+            "pages" => "",
             "sections" => "",
         ];
+    }
+
+    public function commands(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(SitemapCommand::class);
     }
 
 }
