@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,10 +19,10 @@ use Illuminate\Support\Facades\Route;
 require __DIR__ . '/auth.php';
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('/sitemaps/{id}/commands/save', [App\Http\Controllers\SitemapController::class, 'saveCommand']);
-    Route::post('/sitemaps/{id}/commands/undo', [App\Http\Controllers\SitemapController::class, 'undoCommand']);
-    Route::post('/sitemaps/{sitemap}/clone', [App\Http\Controllers\SitemapController::class, 'clone']);
-    Route::post('/sitemaps/{sitemap}/archive', [App\Http\Controllers\SitemapController::class, 'archive']);
+    Route::post('/sitemaps/{id}/commands/save', [SitemapController::class, 'saveCommand']);
+    Route::post('/sitemaps/{id}/commands/undo', [SitemapController::class, 'undoCommand']);
+    Route::post('/sitemaps/{sitemap}/clone', [SitemapController::class, 'clone']);
+    Route::post('/sitemaps/{sitemap}/archive', [SitemapController::class, 'archive']);
 
     Route::get('/user', function (Request $request) {
         return $request->user();
