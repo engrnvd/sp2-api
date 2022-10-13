@@ -58,6 +58,13 @@ class SitemapController extends Controller
         return $sitemap;
     }
 
+    public function archive(Sitemap $sitemap)
+    {
+        $sitemap->archived = !$sitemap->archived;
+        $sitemap->save();
+        return '';
+    }
+
     public function clone(Sitemap $sitemap)
     {
         $cloned = new Sitemap();

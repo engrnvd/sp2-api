@@ -12,7 +12,8 @@ use App\Traits\HasValidationRules;
  * @property string $id
  * @property string $name
  * @property string $owner_id
- * @property string $is_template
+ * @property boolean $is_template
+ * @property boolean $archived
  * @property array $tree
  * @property array $sections
  * @property string $created_at

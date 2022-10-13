@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->integer('owner_id')->nullable();
             $table->index('owner_id');
             $table->boolean('is_template')->nullable();
+            $table->boolean('archived')->default(false);
             $table->json('tree')->nullable();
             $table->json('sections')->nullable();
             $table->timestamps();
