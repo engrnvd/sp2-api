@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Traits\HasValidationRules;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Validation\Rule;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Support\Arr;
 
 /**
  * App\Models\User
@@ -16,6 +15,7 @@ use Illuminate\Support\Arr;
  * @property string $id
  * @property string $name
  * @property string $email
+ * @property string $company
  * @property string $otp
  * @property string $password
  * @property string $is_admin
@@ -86,7 +86,7 @@ class User extends Authenticatable
     {
         return [
             "name" => "required",
-            "email" => "required|email|unique:users,email,{$this->id}",
+            "email" => ['required', 'email', Rule::unique('users')->ignore($this)],
             "password" => "required|min:6",
             "is_admin" => "",
         ];

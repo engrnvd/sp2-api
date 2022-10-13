@@ -93,6 +93,36 @@ class AuthController extends Controller
         return 'Password has been reset';
     }
 
+    public function changePassword(Request $request): string
+    {
+        $user = User::current();
+
+        if (!Hash::check($request->password, $user->password)) {
+            abort(400, 'Invalid password.');
+        }
+
+        $request->validate($user->getValidationRules('password'));
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return 'Password has been changed';
+    }
+
+    public function update(): string
+    {
+        $user = User::current();
+
+        request()->validate($user->getValidationRules(['email', 'name']));
+
+        $user->email = \request('email');
+        $user->name = \request('name');
+        $user->company = \request('company');
+        $user->save();
+
+        return '';
+    }
+
     public function logout(Request $request): Response
     {
         $request->user()->currentAccessToken()->delete();
