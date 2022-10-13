@@ -30,6 +30,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/profile/update', [AuthController::class, 'update']);
     Route::post('/profile/change-password', [AuthController::class, 'changePassword']);
+    Route::post('/profile/delete-account', [AuthController::class, 'deleteAccount']);
 
     require_once __DIR__ . "/crud-routes.php";
 });

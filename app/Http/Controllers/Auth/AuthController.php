@@ -98,7 +98,7 @@ class AuthController extends Controller
         $user = User::current();
 
         if (!Hash::check($request->password, $user->password)) {
-            abort(400, 'Invalid password.');
+            abort(401, 'Invalid password.');
         }
 
         $request->validate($user->getValidationRules('password'));
@@ -119,6 +119,19 @@ class AuthController extends Controller
         $user->name = \request('name');
         $user->company = \request('company');
         $user->save();
+
+        return '';
+    }
+
+    public function deleteAccount(): string
+    {
+        $user = User::current();
+
+        if (!Hash::check(request('password'), $user->password)) {
+            abort(401, 'Invalid password.');
+        }
+
+        $user->delete();
 
         return '';
     }
