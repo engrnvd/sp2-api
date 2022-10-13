@@ -19,6 +19,7 @@ require __DIR__ . '/auth.php';
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/sitemaps/{id}/commands/save', [App\Http\Controllers\SitemapController::class, 'saveCommand']);
     Route::post('/sitemaps/{id}/commands/undo', [App\Http\Controllers\SitemapController::class, 'undoCommand']);
+    Route::post('/sitemaps/{sitemap}/clone', [App\Http\Controllers\SitemapController::class, 'clone']);
 
     Route::get('/user', function (Request $request) {
         return $request->user();

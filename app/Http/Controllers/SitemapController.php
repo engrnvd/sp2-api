@@ -58,6 +58,18 @@ class SitemapController extends Controller
         return $sitemap;
     }
 
+    public function clone(Sitemap $sitemap)
+    {
+        $cloned = new Sitemap();
+        $cloned->name = $sitemap->name . ' Copy';
+        $cloned->tree = $sitemap->tree;
+        $cloned->sections = $sitemap->sections;
+        $cloned->is_template = false;
+        $cloned->owner_id = \auth('sanctum')->user()->id;
+        $cloned->save();
+        return $cloned;
+    }
+
     public function update(Request $request, Sitemap $sitemap)
     {
         if ($request->wantsJson()) {
