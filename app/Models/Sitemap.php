@@ -16,6 +16,7 @@ use App\Traits\HasValidationRules;
  * @property boolean $archived
  * @property array $tree
  * @property array $sections
+ * @property array $notes
  * @property string $created_at
  * @property string $updated_at
  * @property SitemapVersion[] $versions
@@ -32,6 +33,7 @@ class Sitemap extends Model
     protected $casts = [
         'tree' => 'array',
         'sections' => 'array',
+        'notes' => 'array',
     ];
     public static $bulkEditableFields = ['name', 'owner_id', 'is_template'];
 
@@ -68,6 +70,7 @@ class Sitemap extends Model
             "is_template" => "",
             "tree" => "",
             "sections" => "",
+            "notes" => "",
         ];
     }
 

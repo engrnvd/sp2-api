@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->boolean('archived')->default(false);
             $table->json('tree')->nullable();
             $table->json('sections')->nullable();
+            $table->json('notes')->nullable();
             $table->timestamps();
         });
     }

@@ -24,6 +24,7 @@ class SitemapController extends Controller
             ['name' => 'Home', 'childIds' => []]
         ];
         $sitemap->sections = [];
+        $sitemap->notes = [];
         $this->validate($request, $sitemap->getValidationRules());
         $sitemap->save();
         return $sitemap;
@@ -42,6 +43,7 @@ class SitemapController extends Controller
         Sitemap::where('id', $id)->update([
             'tree' => json_encode(Arr::get($command, 'payload.tree')),
             'sections' => json_encode(Arr::get($command, 'payload.sections', [])),
+            'notes' => json_encode(Arr::get($command, 'payload.notes', [])),
         ]);
 
         return '';
@@ -71,6 +73,7 @@ class SitemapController extends Controller
         $cloned->name = $sitemap->name . ' Copy';
         $cloned->tree = $sitemap->tree;
         $cloned->sections = $sitemap->sections;
+        $cloned->notes = $sitemap->notes;
         $cloned->is_template = false;
         $cloned->owner_id = \auth('sanctum')->user()->id;
         $cloned->save();
