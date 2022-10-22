@@ -2,17 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApmCrawlerObserver;
 use App\Models\Sitemap;
 use App\Models\SitemapVersion;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
+use Spatie\Crawler\Crawler;
+use Spatie\Crawler\CrawlProfiles\CrawlInternalUrls;
 
 class SitemapController extends Controller
 {
-    public function index()
+    public function index(): LengthAwarePaginator|array
     {
         return Sitemap::findRequested();
+    }
+
+    public function import(Request $request): array
+    {
+        $request->validate(['website' => 'url']);
+        $website = \request('website');
+        // todo: move to job
+        Crawler::create()
+            ->ignoreRobots()
+            ->setCrawlObserver(new ApmCrawlerObserver())
+            ->setTotalCrawlLimit(500)
+            ->setCrawlProfile(new CrawlInternalUrls($website))
+            ->startCrawling($website);
+
+        return \request()->all();
     }
 
     public function store(Request $request)
