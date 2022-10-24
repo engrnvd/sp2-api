@@ -17,3 +17,10 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Artisan::command('test:redis', function () {
+    $redisChannel = env('SOCKET_IO_CHANNEL', 'socket-io');
+    \Illuminate\Support\Facades\Redis::subscribe([$redisChannel], function ($data) {
+        echo $data;
+    });
+});

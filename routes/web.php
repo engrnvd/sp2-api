@@ -16,3 +16,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return ['Laravel' => app()->version()];
 });
+
+Route::any('socket-io', function () {
+    if (request('event')) {
+        return \App\Helpers\SocketIo::trigger(request('event', 'hello'), request('data', '12345'));
+    }
+
+    return view('socket-io');
+});
