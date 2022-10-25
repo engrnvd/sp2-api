@@ -7,31 +7,37 @@ use App\Models\Sitemap;
 use App\Models\SitemapVersion;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
 use Spatie\Crawler\Crawler;
 use Spatie\Crawler\CrawlProfiles\CrawlInternalUrls;
 
 class SitemapController extends Controller
 {
-    public function index(): LengthAwarePaginator|array
+    public function index()
     {
         return Sitemap::findRequested();
     }
 
-    public function import(Request $request): array
+    public function import(Request $request): string
     {
         $request->validate(['website' => 'url']);
         $website = \request('website');
-        // todo: move to job
-        Crawler::create()
-            ->ignoreRobots()
-            ->setCrawlObserver(new ApmCrawlerObserver())
-            ->setTotalCrawlLimit(500)
-            ->setCrawlProfile(new CrawlInternalUrls($website))
-            ->startCrawling($website);
+        $user = User::current();
+        $observer = new ApmCrawlerObserver($website, $user);
 
-        return \request()->all();
+        dispatch(function () use ($observer, $website, $user) {
+            Crawler::create()
+                ->ignoreRobots()
+                ->setCrawlObserver($observer)
+                ->setTotalCrawlLimit(500)
+                ->setCrawlProfile(new CrawlInternalUrls($website))
+                ->startCrawling($website);
+        })->catch(function (\Throwable $e) use ($website, $observer) {
+            $observer->notify("Failed to crawl {$website}: " . $e->getMessage(), true, true);
+            $observer->log("Failed to crawl {$website}: " . $e->getMessage() . "\n" . $e->getTraceAsString());
+        });
+
+        return 'started';
     }
 
     public function store(Request $request)
@@ -39,11 +45,11 @@ class SitemapController extends Controller
         $sitemap = new Sitemap($request->all());
         $sitemap->is_template = $request->is_template ?? false;
         $sitemap->owner_id = \auth('sanctum')->user()->id;
-        $sitemap->tree = [
+        if (!$sitemap->tree) $sitemap->tree = [
             ['name' => 'Home', 'childIds' => []]
         ];
-        $sitemap->sections = [];
-        $sitemap->notes = [];
+        if (!$sitemap->sections) $sitemap->sections = [];
+        if (!$sitemap->notes) $sitemap->notes = [];
         $this->validate($request, $sitemap->getValidationRules());
         $sitemap->save();
         return $sitemap;

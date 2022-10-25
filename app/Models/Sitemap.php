@@ -54,7 +54,7 @@ class Sitemap extends Model
         }
 
         // sort results
-        if (\Request::has("sort")) $query->orderBy(request("sort"), request("sortType", "asc"));
+        if ($sort = request("sort", 'id')) $query->orderBy($sort, request("sortType", "desc"));
 
         // paginate results
         if ($resPerPage = request("perPage"))
