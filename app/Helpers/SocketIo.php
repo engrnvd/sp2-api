@@ -19,9 +19,8 @@ class SocketIo
         ]));
     }
 
-    public static function forCurrentUser($event, $data)
+    public static function forUser($event, $data, User $user = null)
     {
-        $user = User::current();
         if (!$user) {
             Log::warning("Tried to trigger socket event for not logged in user: "
                 . "\nEvent: " . json_encode($event)
@@ -32,6 +31,11 @@ class SocketIo
         $room = env('SOCKET_IO_USER_ROOM') . "-" . $user->id;
 
         return static::trigger($event, $data, $room);
+    }
+
+    public static function forCurrentUser($event, $data)
+    {
+        return static::forUser($event, $data, User::current());
     }
 
     public static function publicRoom()
