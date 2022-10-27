@@ -35,7 +35,7 @@ class ApmCrawlerObserver extends CrawlObserver
         $lastMod = $this->parseLastMod($response);
         $page = [
             'url' => $url->getPath(),
-            'last_modified' => $lastMod,
+            'last_modified' => $lastMod->format('Y-m-d'),
         ];
         $this->pages[] = $page;
 
@@ -47,7 +47,6 @@ class ApmCrawlerObserver extends CrawlObserver
     private function parseLastMod(ResponseInterface $response): Carbon
     {
         $lastMod = Arr::get($response->getHeader('Last-Modified'), 0);
-        $this->log($lastMod);
         return $lastMod ? Carbon::parse($lastMod) : Carbon::now();
     }
 

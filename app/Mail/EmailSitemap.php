@@ -14,7 +14,7 @@ class EmailSitemap extends Mailable
 {
     use Queueable, SerializesModels;
 
-    private string $sitemap;
+    public string $sitemap;
 
     public function __construct($sitemap)
     {

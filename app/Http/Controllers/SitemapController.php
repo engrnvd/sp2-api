@@ -188,19 +188,27 @@ class SitemapController extends Controller
         $res = $smH->findSitemap();
 
         if ($email) {
+            // todo: save email in db
             if ($res->ok()) {
                 $smH->emailSitemap($email, $res);
                 return ['message' => 'We have emailed the sitemap to you.'];
             } else {
-                dispatch(function () use ($website) {
-                    $observer = (new class($website) extends ApmCrawlerObserver {
+                dispatch(function () use ($website, $email) {
+                    $observer = (new class($website, null, $email) extends ApmCrawlerObserver {
+                        private string $email;
+
+                        public function __construct(string $website, User $user = null, $email = '')
+                        {
+                            $this->email = $email;
+                            parent::__construct($website, $user);
+                        }
+
                         public function finishedCrawling(): void
                         {
                             parent::finishedCrawling();
-                            $email = request('email');
                             $smH = new \App\Helpers\SitemapHelper($this->website);
                             $sitemap = $smH->generateSitemap($this->pages);
-                            $smH->emailSitemap($email, $sitemap);
+                            $smH->emailSitemap($this->email, $sitemap);
                         }
                     });
 
