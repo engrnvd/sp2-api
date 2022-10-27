@@ -2,28 +2,20 @@
 
 namespace App\Providers;
 
+use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use Naveed\Scaff\ScaffServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
     public function register()
     {
-        if ($this->app->environment() === 'local') {
+        if ($this->app->isLocal()) {
             $this->app->register(ScaffServiceProvider::class);
+            $this->app->register(IdeHelperServiceProvider::class);
         }
     }
 
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
     public function boot()
     {
         //
