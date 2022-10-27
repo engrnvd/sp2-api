@@ -15,10 +15,10 @@ class ApmCrawlerObserver extends CrawlObserver
 {
     use HasLogs;
 
-    private $logDir = 'crawler';
-    private string $website;
-    private ?User $user;
-    private array $pages = [];
+    protected $logDir = 'crawler';
+    protected string $website;
+    protected ?User $user;
+    protected array $pages = [];
 
     public function __construct(string $website, User $user = null)
     {

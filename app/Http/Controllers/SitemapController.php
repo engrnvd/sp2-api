@@ -177,4 +177,50 @@ class SitemapController extends Controller
             abort(403, $validator->errors()->first($field));
         }
     }
+
+    public function findSitemap(Request $request)
+    {
+        $request->validate(['website' => 'url']);
+        $website = \request('website');
+        $email = $request->email;
+
+        $smH = new \App\Helpers\SitemapHelper($website);
+        $res = $smH->findSitemap();
+
+        if ($email) {
+            if ($res->ok()) {
+                $smH->emailSitemap($email, $res);
+                return ['message' => 'We have emailed the sitemap to you.'];
+            } else {
+                dispatch(function () use ($website) {
+                    $observer = (new class($website) extends ApmCrawlerObserver {
+                        public function finishedCrawling(): void
+                        {
+                            parent::finishedCrawling();
+                            $email = request('email');
+                            $smH = new \App\Helpers\SitemapHelper($this->website);
+                            $sitemap = $smH->generateSitemap($this->pages);
+                            $smH->emailSitemap($email, $sitemap);
+                        }
+                    });
+
+                    Crawler::create()
+                        ->ignoreRobots()
+                        ->setCrawlObserver($observer)
+                        ->setTotalCrawlLimit(500)
+                        ->setCrawlProfile(new CrawlInternalUrls($website))
+                        ->startCrawling($website);
+                })->catch(function (\Throwable $e) use ($website) {
+                    \Log::error("Failed to crawl {$website}: " . $e->getMessage() . "\n" . $e->getTraceAsString());
+                });
+                return ['message' => 'We will email the sitemap to you when it is ready. Crawling your website may take several minutes depending on the number of pages it has.'];
+            }
+        }
+
+        if ($res->failed()) {
+            return ['message' => "We could not find the sitemap for {$website}. Please enter your email so we can generate the sitemap and email it to you."];
+        } else {
+            return ['message' => "We found the sitemap for {$website}. Please enter your email so we can email it to you."];
+        }
+    }
 }
