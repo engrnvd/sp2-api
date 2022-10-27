@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\HasValidationRules;
 
@@ -24,6 +23,17 @@ use App\Traits\HasValidationRules;
  * @method static \Illuminate\Database\Query\Builder|Sitemap whereOwnerId($value)
  * @method static \Illuminate\Database\Query\Builder|Sitemap whereIsTemplate($value)
  * @mixin \Eloquent
+ * @property-read int|null $versions_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Sitemap newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Sitemap newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Sitemap query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Sitemap whereArchived($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sitemap whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sitemap whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sitemap whereNotes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sitemap whereSections($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sitemap whereTree($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sitemap whereUpdatedAt($value)
  */
 class Sitemap extends Model
 {
