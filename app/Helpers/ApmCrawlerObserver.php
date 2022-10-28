@@ -16,14 +16,13 @@ class ApmCrawlerObserver extends CrawlObserver
     use HasLogs;
 
     protected $logDir = 'crawler';
-    protected string $website;
-    protected ?User $user;
     protected array $pages = [];
 
-    public function __construct(string $website, User $user = null)
+    public function __construct(
+        protected string $website,
+        protected ?User  $user = null
+    )
     {
-        $this->website = $website;
-        $this->user = $user;
     }
 
     public function willCrawl(UriInterface $url): void

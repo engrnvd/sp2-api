@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Helpers\SitemapHelper;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\HasValidationRules;
 
@@ -45,7 +47,31 @@ class Sitemap extends Model
         'sections' => 'array',
         'notes' => 'array',
     ];
-    public static $bulkEditableFields = ['name', 'owner_id', 'is_template'];
+    public static array $bulkEditableFields = ['name', 'owner_id', 'is_template'];
+
+    private function pageToLinks($page): array
+    {
+        $pages = [];
+        $url = \Arr::get($page, 'link', '');
+        $last_modified = \Arr::get($page, 'last_modified', Carbon::now()->format('Y-m-d'));
+        $pages[] = ['url' => $url, 'last_modified' => $last_modified];
+
+        $children = \Arr::get($page, 'children', []);
+        foreach ($children as $child) {
+            $pages = [
+                ...$pages,
+                ...$this->pageToLinks($child)
+            ];
+        }
+
+        return $pages;
+    }
+
+    public function toSitemapXml(): string
+    {
+        $smh = new SitemapHelper('');
+        return $smh->generateSitemap($this->pageToLinks($this->tree[0]));
+    }
 
     public static function findRequested()
     {

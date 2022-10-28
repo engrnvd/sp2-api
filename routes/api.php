@@ -12,6 +12,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/sitemaps/{id}/commands/undo', [SitemapController::class, 'undoCommand']);
     Route::post('/sitemaps/{sitemap}/clone', [SitemapController::class, 'clone']);
     Route::post('/sitemaps/{sitemap}/archive', [SitemapController::class, 'archive']);
+    Route::get('/sitemaps/{sitemap}/to-sitemap-xml', [SitemapController::class, 'toSitemapXml']);
     Route::post('/sitemaps/import', [SitemapController::class, 'import']);
 
     Route::get('/user', function (Request $request) {

@@ -13,6 +13,11 @@ use Spatie\Crawler\CrawlProfiles\CrawlInternalUrls;
 
 class SitemapController extends Controller
 {
+    public function toSitemapXml(Sitemap $sitemap): string
+    {
+        return $sitemap->toSitemapXml();
+    }
+
     public function index()
     {
         return Sitemap::findRequested();
