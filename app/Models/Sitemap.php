@@ -48,6 +48,7 @@ class Sitemap extends Model
         'notes' => 'array',
     ];
     public static array $bulkEditableFields = ['name', 'owner_id', 'is_template'];
+    private int $pageIndex = 1;
 
     private function pageToLinks($page): array
     {
@@ -71,6 +72,58 @@ class Sitemap extends Model
     {
         $smh = new SitemapHelper('');
         return $smh->generateSitemap($this->pageToLinks($this->tree[0]));
+    }
+
+    public function toText(): string
+    {
+        $this->pageIndex = 1;
+        $output = "Sitemap created with " . config('app.name') . " on " . Carbon::now()->toFormattedDateString();
+        $output .= "\nURL: " . env('FRONTEND_URL') . "/p/{$this->id}\n\n";
+
+        $output .= $this->name . "\n\n";
+
+        $output .= "----- Pages -----\n\n";
+
+        foreach ($this->tree as $page) {
+            $output .= $this->pageToText($page);
+        }
+
+        foreach ($this->sections as $section) {
+            $this->pageIndex = 1;
+            $name = \Arr::get($section, 'name');
+            $output .= "----- {$name} -----\n\n";
+            $pages = \Arr::get($section, 'children', []);
+            foreach ($pages as $page) {
+                $output .= $this->pageToText($page);
+            }
+        }
+
+        return $output;
+    }
+
+    private function pageToText($page): string
+    {
+        $name = \Arr::get($page, 'name', '');
+        $output = "{$this->pageIndex}. {$name}";
+
+        $url = \Arr::get($page, 'link', '');
+        if ($url) $output .= " ($url)";
+
+        $output .= "\n";
+
+        $blocks = \Arr::get($page, 'blocks', []);
+        foreach ($blocks as $item) {
+            $output .= "   - " . \Arr::get($item, 'name', '') . "\n";
+        }
+        $output .= "\n";
+        $this->pageIndex++;
+
+        $children = \Arr::get($page, 'children', []);
+        foreach ($children as $child) {
+            $output .= $this->pageToText($child);
+        }
+
+        return $output;
     }
 
     public static function findRequested()

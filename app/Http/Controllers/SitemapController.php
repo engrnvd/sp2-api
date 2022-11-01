@@ -13,9 +13,12 @@ use Spatie\Crawler\CrawlProfiles\CrawlInternalUrls;
 
 class SitemapController extends Controller
 {
-    public function toSitemapXml(Sitemap $sitemap): string
+    public function download(Sitemap $sitemap): string
     {
-        return $sitemap->toSitemapXml();
+        $format = \request('format');
+        if ($format === 'xml') return $sitemap->toSitemapXml();
+        if ($format === 'txt') return $sitemap->toText();
+        return $sitemap->toJson();
     }
 
     public function index()
