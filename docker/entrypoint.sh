@@ -16,6 +16,8 @@ php artisan config:clear
 php artisan view:clear
 php artisan cache:clear
 php artisan route:clear
+php artisan migrate --force
+php artisan db:seed --force
 
 php-fpm -D
 echo 'running nginx'
