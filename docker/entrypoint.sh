@@ -15,6 +15,9 @@ php artisan key:generate
 php artisan config:clear
 php artisan view:clear
 php artisan cache:clear
+php artisan route:clear
 
 php-fpm -D
-nginx -g "daemon off;"
+echo 'running nginx'
+service nginx start
+supervisord -c /etc/supervisor/conf.d/supervisord.conf

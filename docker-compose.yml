@@ -1,7 +1,7 @@
 # For more information: https://laravel.com/docs/sail
 version: '3'
 services:
-  laravel.test:
+  laravel.app:
     build: .
     environment:
       - APP_ENV=${APP_ENV}
@@ -51,16 +51,16 @@ services:
       timeout: 5s
   socket:
     image: "node:16-alpine"
-    working_dir: /var/www/html/socket-io
-    command: sh -c "npm install  && node socket.js"
+    working_dir: /var/www/socket-io
+    command: sh -c "npm install && node socket.js"
     restart: on-failure
     depends_on:
       - redis
-      - laravel.test
+      - laravel.app
     ports:
       - "${SOCKET_IO_PORT:-3210}:3210"
     volumes:
-      - .:/var/www/html/
+      - .:/var/www/
     networks:
       - sail
   mailhog:
