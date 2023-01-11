@@ -38,7 +38,7 @@ redis.on('message', function (channel, message) {
 io.on('connection', function (socket) {
     const token = socket.handshake.auth.token
     if (token) {
-        axios.get(`http://laravel.test/user`, {
+        axios.get(`http://laravel.app:8000/user`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
